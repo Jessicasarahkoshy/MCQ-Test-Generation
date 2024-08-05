@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCQ Test Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: rgba(53, 52, 52, 0.781);
+            font-size: 50px;
+        }
+        .login{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+        .test-config{
+            display: flex;
+            flex-direction: row;
+        }
+        .form {
+            width: 500px;
+            height: 500px;
+            border-radius: 8px;
+            background-image: linear-gradient(rgb(174, 241, 174), #aef1ae, rgb(122, 235, 122));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 50px;
+            padding: 150px;
+        }
+
+        .form input {
+            width: 400px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form button {
+            width: 430px;
+            border-radius: 4px;
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            color: white;
+            font-size: 25px;
+            padding: 30px;
+        }
+        .form button :hover{
+            color:blue
+        }
+        .question-box {
+            width: 1500px;
+            height: 200px;
+            background-image: linear-gradient(rgb(174, 200, 241), rgb(174, 200, 241), rgb(122, 153, 235));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            flex-wrap:initial;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        .question-box label {
+            font-size: 30px;
+            margin-bottom: 20px;
+            color: #012b2b;
+        }
+
+        .question-box input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .question-box .input {
+            display: inline;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .question-box p {
+            margin: 5px 0;
+            display: inline;
+            color: #012b2b;
+            font-size: 30px;
+        }
+        .test-box {
+            width: 500px;
+            height: auto;
+            border-radius: 8px;
+            background-image:linear-gradient(rgb(174, 241, 174), #aef1ae, rgb(122, 235, 122));
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            justify-content: center;
+            margin-right: 50px;
+            padding: 40px;
+            color: #012b2b;
+        }
+
+        .test-box h3 {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .test-box p {
+            font-size: 21px;
+            margin: 10px 0;
+        }
+        .test-box button{
+            width: 430px;
+            border-radius: 4px;
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            color: white;
+            font-size: 25px;
+            padding: 30px;
+        }
+        .hidden{
+            display: none;
+        }
+        button{
+            width: 430px;
+            border-radius: 4px;
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            color: white;
+            font-size: 1rem;
+            padding: 15px;
+        }
+        .score-box{
+            width: 1500px;
+            height: 700px;
+            background-image: linear-gradient(rgb(222, 149, 210), rgb(211, 108, 194), rgb(211, 96, 192));
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h3{
+            color: rgb(223, 214, 214);
+            font-size: 80px;
+        }
+        h2{
+            color: rgb(14, 14, 11);
+            font-size: 50px;
+        }
+        p{
+            color:#012b2b;
+            font-size:large;
+        }
+        .test-heading{
+            color: rgba(53, 52, 52, 0.781);
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>MCQ TEST</h1>
+        <div class="form">
+            <form action="">
+                <input type="email" class="user_email" placeholder="User Email" required><br>
+                <input type="password" class="user_password" placeholder="User Password" required><br>
+                <button type="submit" onclick="submit_login(event)">Submit</button>
+            </form>
+            <div class="message"></div>
+        </div>
+    </div>
+    <div class="test hidden">
+        <h1>MCQ TEST</h1>
+    </div>
+    <h1 class="test-heading hidden"></h1>
+    <div class="test-config hidden">
+    </div>
+    <div class="result hidden">
+        <h1>SCORE</h1>
+    </div>
+    <script>
+    function submit_login(event) {
+    event.preventDefault();
+    var user_email = document.getElementsByClassName("user_email")[0].value;
+    var user_password = document.getElementsByClassName("user_password")[0].value;
+    fetch('http://127.0.0.1:5000/mcqtest/user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user_email: user_email, user_passwd: user_password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message == "True") {
+            document.getElementsByClassName("login")[0].classList.add("hidden");
+            document.getElementsByClassName("test-config")[0].classList.remove("hidden");
+            document.getElementsByClassName("test-heading")[0].classList.remove("hidden");
+            var user_id = data.user_id;
+            document.getElementsByClassName("test-heading")[0].innerHTML+="<h1>Welcome User "+user_id+"<\h1>";
+            data.test_configs.forEach(config => {
+                var modules = JSON.stringify(config.modules).replace(/"/g, '&quot;');
+                document.getElementsByClassName("test-config")[0].innerHTML += `
+                <div class="test-box">
+                    <h2>Subject Name</h2>
+                    <p>Marks: ${config.marks}</p>
+                    <p>Cut-off: ${config.cut_off}</p>
+                    <p>Total questions: ${config.no_of_questions}</p>
+                    <p>Test duration: ${config.test_duration}</p>
+                    <button onclick="mcq_test(${user_id},${config.threshold},${config.subject_id},'${modules}','${config.test_duration}',${config.cut_off},${config.no_of_questions}, ${config.marks})">Take test</button>
+                </div>`;
+            });
+        }
+        else{
+            document.getElementsByClassName("message")[0].innerHTML="<p>"+data.message+"</p>"
+        }
+    });
+}
+
+function mcq_test(user_id, threshold, subject_id, modules, test_duration, cut_off, no_of_questions, marks) {
+    event.preventDefault();
+    fetch('http://127.0.0.1:5000/mcqtest/test', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user_id: user_id,
+            threshold: threshold,
+            subject_id: subject_id,
+            modules: JSON.parse(modules.replace(/&quot;/g, '"')),
+            test_duration: test_duration,
+            cut_off: cut_off,
+            no_of_questions: no_of_questions,
+            marks: marks
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.message=="success"){
+        document.getElementsByClassName("test-config")[0].classList.add("hidden");
+        document.getElementsByClassName("test-heading")[0].classList.add("hidden");
+        document.getElementsByClassName("test")[0].classList.remove("hidden");
+        var count=1;
+        var test_id=data.test_id;
+        data.question_list.forEach(que=>{
+            que_name="question"+count;
+            var option1=que.option1;
+            var option2=que.option2;
+            var option3=que.option3;
+            var option4=que.option4;
+            document.getElementsByClassName("test")[0].innerHTML +=`
+            <div class="question-box">
+            <form action="" class="input">
+                <label for=${que_name}>${count})${que.question}</label><br><br><br>
+                    <input type="radio" name=${que_name} value='${option1}' required><p>${option1}</p><br>
+                    <input type="radio" name=${que_name} value='${option2}' required><p>${option2}</p><br>
+                    <input type="radio" name=${que_name} value='${option3}' required><p>${option3}</p><br>
+                    <input type="radio" name=${que_name} value='${option4}' required><p>${option4}</p><br>
+            </form>
+        </div>`
+        count+=1;
+        })
+        document.getElementsByClassName("test")[0].innerHTML +=`<button onclick="submit_ans(event,${count},${test_id})">Submit</submit>`
+        }
+        else{
+            document.getElementsByClassName("test-config")[0].classList.add("hidden");
+            document.getElementsByClassName("test")[0].classList.remove("hidden");
+            document.getElementsByClassName("test")[0].innerHTML="<p>"+data.message+"/p";
+        }
+    });
+}
+function submit_ans(event,count,test_id){
+    console.log(count);
+    event.preventDefault();
+    ans_list=[];
+    for(let i=1;i<=count;i++){
+        que_name="question"+i;
+        var options=document.getElementsByName(que_name);
+        var ans;
+        var p=0;
+        for(let j=0;j<options.length;j++){
+            if(options[j].checked){
+                ans=options[j].value;
+                ans_list.push(ans);
+                p=1;
+                break;
+                }
+            }
+        if(p==0){
+            ans="NULL";
+            ans_list.push(ans);
+        }   
+        }
+    fetch('http://127.0.0.1:5000/mcqtest/score', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            answer_list:ans_list,
+            test_id:test_id
+        })
+    })
+    .then(response=>response.json())
+    .then(data=>{
+        document.getElementsByClassName("result")[0].classList.remove("hidden");
+        document.getElementsByClassName("test")[0].classList.add("hidden");
+        var marks=data.marks;
+        var cut_off=data.cut_off;
+        var result;
+        if(marks<cut_off){
+            result="Fail";
+        }
+        else{
+            result="Pass";
+        }
+        document.getElementsByClassName("result")[0].innerHTML+=`<div class="score-box">
+            <h3>Marks:${marks}</h3>
+            <h3>${result}</h3>
+            </div>`
+    })
+}
+</script>
+</body>
+</html>
