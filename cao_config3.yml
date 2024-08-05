@@ -1,0 +1,13 @@
+threshold: 0.7
+subject_id: 100
+modules:
+  - module_id: 200
+    no_of_questions: 2
+    mark: 10
+
+  - module_id: 201
+    no_of_questions: 1
+    mark: 10
+
+cut_off: 25
+test_duration: "01:10:00"
